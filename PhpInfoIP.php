@@ -8,8 +8,12 @@
    #MODO USO:
    Setar o valor abaixo no lugar do endereço do google para verificar informações.
    
+   #Version 0.1
+   
 */
-define(ENDERECO_INFO, "www.google.com");
+# Habilite apenas uma por vez...
+define(ENDERECO_INFO, "www.google.com"); # Para pegar informações de um IP/Domínio Específico ...
+#define(ENDERECO_INFO, $_SERVER['REMOTE_ADDR']); # Para pegar informações de um IP/Domínio de quem está acessando a página ...
     
     
 class IPAPI {
@@ -53,34 +57,27 @@ class IPAPI {
     }
 }
  
-
-$query    = IPAPI::consulta(ENDERECO_INFO);
-
+    $query    = IPAPI::consulta(ENDERECO_INFO);
     if($query->status == 'success')
     {    
-       echo '<br>Consulta:<pre>';    
-        
+       echo '<br>Consulta:<pre>';     
        echo " IP/Domínio: ".ENDERECO_INFO."<br/>"; 
        echo " Cidade: ".$query->city."<br/>";
        echo " Estado: ".$query->regionName."<br/>";
        echo " CEP: ".$query->zip."<br/>";    
        echo " País: ".$query->country."<br/>";
-       echo " Mapa: <a target='_blank' href='https://maps.google.com.br/maps?&z=15&mrt=yp&t=k&q=".$query->lat.",".$query->lon." '>Ver no Google Maps</a>";
-            
+       echo " Mapa: <a target='_blank' href='https://maps.google.com.br/maps?&z=15&mrt=yp&t=k&q=".$query->lat.",".$query->lon." '>Ver no Google Maps</a>";            
     }
     else if($query->status == 'fail')
     {    
-        echo '[Erro na Consulta]: '.$query->message;
+        die('[Erro na Consulta]: '.$query->message);
     }
     else 
     {
-        echo '[Erro na Consulta]: Site Indisponível';
+        die('[Erro na Consulta]: Site Indisponível');
     }    
 
-
-
-echo '<br><br>Debug: <pre>';
-var_dump($query);
-echo '</pre>';
-
+ echo '<br><br>Debug: <pre>';
+ var_dump($query);
+ echo '</pre>';
 ?>
